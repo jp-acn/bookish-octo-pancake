@@ -1,8 +1,7 @@
-import mongoose from "mongoose";
+import { mongoose, connectDatabase, MONGO_URI } from "../config/database";
 import { Activity, Leaderboard, Team, User, Workout } from "../models";
 
 // Seed the octofit_db database with test data
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/octofit_db";
 
 async function clearData() {
   await Promise.all([
@@ -17,7 +16,7 @@ async function clearData() {
 async function seed() {
   try {
     console.log("Connecting to MongoDB:", MONGO_URI);
-    await mongoose.connect(MONGO_URI);
+    await connectDatabase();
     console.log("Seed the octofit_db database with test data");
 
     await clearData();

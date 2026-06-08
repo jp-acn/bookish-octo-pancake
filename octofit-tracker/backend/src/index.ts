@@ -1,9 +1,8 @@
 import express from "express";
-import mongoose from "mongoose";
+import { connectDatabase, MONGO_URI } from "./config/database";
 import { Activity, Leaderboard, Team, User, Workout } from "./models";
 
 const PORT = process.env.PORT ? Number(process.env.PORT) : 8000;
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/octofit_db";
 const CODESPACE_NAME = process.env.CODESPACE_NAME;
 const CODESPACE_API_HOST = CODESPACE_NAME
   ? `${CODESPACE_NAME}-8000.githubpreview.dev`
@@ -63,7 +62,7 @@ app.all(/^\/api\/.*$/, (_req, res) => {
 
 async function start() {
   try {
-    await mongoose.connect(MONGO_URI);
+    await connectDatabase();
     console.log("Connected to MongoDB", MONGO_URI);
 
     app.listen(PORT, () => {
