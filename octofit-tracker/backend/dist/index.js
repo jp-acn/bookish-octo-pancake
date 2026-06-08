@@ -4,10 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const mongoose_1 = __importDefault(require("mongoose"));
+const database_1 = require("./config/database");
 const models_1 = require("./models");
 const PORT = process.env.PORT ? Number(process.env.PORT) : 8000;
-const MONGO_URI = process.env.MONGO_URI || "mongodb://localhost:27017/octofit_db";
 const CODESPACE_NAME = process.env.CODESPACE_NAME;
 const CODESPACE_API_HOST = CODESPACE_NAME
     ? `${CODESPACE_NAME}-8000.githubpreview.dev`
@@ -56,8 +55,8 @@ app.all(/^\/api\/.*$/, (_req, res) => {
 });
 async function start() {
     try {
-        await mongoose_1.default.connect(MONGO_URI);
-        console.log("Connected to MongoDB", MONGO_URI);
+        await (0, database_1.connectDatabase)();
+        console.log("Connected to MongoDB", database_1.MONGO_URI);
         app.listen(PORT, () => {
             const host = CODESPACE_API_HOST ? CODESPACE_API_HOST : `localhost:${PORT}`;
             console.log(`Server listening on http://${host}`);
