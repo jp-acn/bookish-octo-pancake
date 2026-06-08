@@ -5,7 +5,7 @@ import { Activity, Leaderboard, Team, User, Workout } from "./models";
 const PORT = process.env.PORT ? Number(process.env.PORT) : 8000;
 const CODESPACE_NAME = process.env.CODESPACE_NAME;
 const CODESPACE_API_HOST = CODESPACE_NAME
-  ? `${CODESPACE_NAME}-8000.githubpreview.dev`
+  ? `${CODESPACE_NAME}-8000.app.github.dev`
   : null;
 const API_BASE_URL = CODESPACE_API_HOST
   ? `https://${CODESPACE_API_HOST}/api`
@@ -66,8 +66,10 @@ async function start() {
     console.log("Connected to MongoDB", MONGO_URI);
 
     app.listen(PORT, () => {
-      const host = CODESPACE_API_HOST ? CODESPACE_API_HOST : `localhost:${PORT}`;
-      console.log(`Server listening on http://${host}`);
+      const host = CODESPACE_API_HOST
+        ? `https://${CODESPACE_API_HOST}`
+        : `http://localhost:${PORT}`;
+      console.log(`Server listening on ${host}`);
       console.log(`API base URL: ${API_BASE_URL}`);
     });
   } catch (err) {
